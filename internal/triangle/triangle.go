@@ -1,4 +1,4 @@
-package internal
+package triangle
 
 func ClassifyTriangle(a, b, c int) string {
 	if a < 1 || a > 100 ||

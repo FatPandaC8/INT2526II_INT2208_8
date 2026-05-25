@@ -2,7 +2,6 @@ package triangle
 
 import (
 	"testing"
-	"triangle/internal"
 )
 
 func TestClassifyTriangle(t *testing.T) {
@@ -101,7 +100,7 @@ func TestClassifyTriangle(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := internal.ClassifyTriangle(tc.a, tc.b, tc.c)
+			result := ClassifyTriangle(tc.a, tc.b, tc.c)
 
 			if result != tc.expected {
 				t.Errorf(
