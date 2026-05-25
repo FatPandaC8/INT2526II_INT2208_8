@@ -2,6 +2,63 @@ package bank
 
 import "testing"
 
+func TestClassifyRisk(t *testing.T) {
+
+	tests := []struct {
+		name         string
+		creditScore  int
+		expectedRisk string
+	}{
+		{
+			name:         "300 => High",
+			creditScore:  300,
+			expectedRisk: "High",
+		},
+		{
+			name:         "500 => High",
+			creditScore:  500,
+			expectedRisk: "High",
+		},
+		{
+			name:         "501 => Medium",
+			creditScore:  501,
+			expectedRisk: "Medium",
+		},
+		{
+			name:         "700 => Medium",
+			creditScore:  700,
+			expectedRisk: "Medium",
+		},
+		{
+			name:         "701 => Low",
+			creditScore:  701,
+			expectedRisk: "Low",
+		},
+		{
+			name:         "850 => Low",
+			creditScore:  850,
+			expectedRisk: "Low",
+		},
+	}
+
+	for _, tt := range tests {
+
+		t.Run(tt.name, func(t *testing.T) {
+
+			result := ClassifyRisk(tt.creditScore)
+
+			if result != tt.expectedRisk {
+
+				t.Errorf(
+					"expected %s, got %s",
+					tt.expectedRisk,
+					result,
+				)
+			}
+		})
+	}
+}
+
 func TestLoanDecision(t *testing.T) {
 
 	tests := []struct {
@@ -265,5 +322,78 @@ func TestLoanDecision(t *testing.T) {
 				)
 			}
 		})
+	}
+}
+
+// Combinatory
+func TestExhaustiveInvalidInputs(t *testing.T) {
+
+	ages := []int{
+		17,
+		18,
+		30,
+		65,
+		66,
+	}
+
+	incomes := []float64{
+		4.9,
+		5.0,
+		15.0,
+		500.0,
+		500.1,
+	}
+
+	scores := []int{
+		299,
+		300,
+		650,
+		850,
+		851,
+	}
+
+	employments := []string{
+		"C",
+		"F",
+		"X",
+	}
+
+	for _, age := range ages {
+
+		for _, income := range incomes {
+
+			for _, score := range scores {
+
+				for _, emp := range employments {
+
+					result := LoanDecision(
+						age,
+						income,
+						score,
+						emp,
+					)
+
+					isValid := IsValidInput(
+						age,
+						income,
+						score,
+						emp,
+					)
+
+					if !isValid &&
+						result != "Invalid Input" {
+
+						t.Errorf(
+							"invalid input should return Invalid Input: age=%d income=%f score=%d emp=%s got=%s",
+							age,
+							income,
+							score,
+							emp,
+							result,
+						)
+					}
+				}
+			}
+		}
 	}
 }

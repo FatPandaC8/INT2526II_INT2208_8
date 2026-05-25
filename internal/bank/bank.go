@@ -11,31 +11,56 @@ const (
 	Low = "Low"
 )
 
-func LoanDecision(age int, income float64, creditScore int, employment string) string {
+func ClassifyRisk(creditScore int) string {
+
+	if creditScore >= 300 && creditScore <= 500 {
+		return High
+	}
+
+	if creditScore >= 501 && creditScore <= 700 {
+		return Medium
+	}
+
+	return Low
+}
+
+func IsValidInput(
+	age int,
+	income float64,
+	creditScore int,
+	employment string,
+) bool {
+
 	if age < 18 || age > 65 {
-		return Invalid
+		return false
 	}
 
 	if income < 5.0 || income > 500.0 {
-		return Invalid
+		return false
 	}
 
 	if creditScore < 300 || creditScore > 850 {
-		return Invalid
+		return false
 	}
 
 	if employment != "C" && employment != "F" {
+		return false
+	}
+
+	return true
+}
+
+func LoanDecision(age int, income float64, creditScore int, employment string) string {
+	if !IsValidInput(
+		age,
+		income,
+		creditScore,
+		employment,
+	) {
 		return Invalid
 	}
 
-	risk := ""
-	if creditScore >= 300 && creditScore <= 500 {
-		risk = High
-	} else if creditScore >= 501 && creditScore <= 700 {
-		risk = Medium
-	} else {
-		risk = Low
-	}
+	risk := ClassifyRisk(creditScore)
 
 	if risk == High {
 		return Reject

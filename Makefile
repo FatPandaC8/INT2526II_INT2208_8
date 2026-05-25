@@ -13,7 +13,7 @@ test-triangle:
 	go test ./internal/triangle -v
 
 # Run tests with coverage
-coverage:
+cover:
 	go test ./... -cover
 
 # Generate detailed coverage report
